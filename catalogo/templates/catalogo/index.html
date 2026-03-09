@@ -1,0 +1,24 @@
+{% extends 'catalogo/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'catalogo/partials/_barra_busca.html' %}
+
+<section class="lista-carros" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <h2 style="margin-bottom: 30px; border-left: 5px solid #04d361; padding-left: 15px;">
+        Explore nossa <span style="color: #04d361;">Garagem</span>
+    </h2>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
+        {% for carro in carros %}
+            {% include 'catalogo/partials/_carro.html' %}
+        {% empty %}
+            <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #7c7c8a;">
+                <p>A garagem está vazia no momento. Cadastre novos carros no painel administrativo!</p>
+            </div>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}

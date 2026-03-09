@@ -1,0 +1,104 @@
+<style>
+    .search-section {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/static/img/hero-bg.jpg');
+        background-size: cover;
+        padding: 80px 20px;
+        text-align: center;
+    }
+
+    .search-title {
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: 800;
+        margin-bottom: 20px;
+        font-size: 2rem;
+    }
+
+    .search-form {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* Barra Principal */
+    .main-search-wrapper {
+        position: relative;
+        display: flex;
+        margin-bottom: 15px;
+    }
+
+    .main-search-input {
+        width: 100%;
+        padding: 18px 25px;
+        border-radius: 8px; /* Cantos levemente arredondados igual à foto */
+        border: none;
+        font-size: 1.1rem;
+        outline: none;
+    }
+
+    .btn-search-icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        width: 60px;
+        background-color: #2c5ff6; /* Azul iRacing */
+        color: white;
+        border: none;
+        border-radius: 0 8px 8px 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Seletores Inferiores */
+    .filters-wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Carro e Pista lado a lado */
+        gap: 15px;
+    }
+
+    .filter-select {
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: none;
+        background-color: #f1f1f1;
+        font-weight: 600;
+        color: #333;
+        appearance: none; /* Remove seta padrão */
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 1rem center;
+        background-size: 1em;
+    }
+</style>
+
+<section class="search-section">
+    <h2 class="search-title">Search Setups</h2>
+    
+    <form action="{% url 'buscar' %}" method="GET" class="search-form">
+        <div class="main-search-wrapper">
+            <input type="text" name="q" class="main-search-input" placeholder="Find the perfect setup...">
+            <button type="submit" class="btn-search-icon">
+                🔍
+            </button>
+        </div>
+
+        <div class="filters-wrapper">
+            <select name="carro" class="filter-select">
+                <option value="">Car</option>
+                {% for carro in carros %}
+                    <option value="{{ carro.id }}">{{ carro.nome }}</option>
+                {% endfor %}
+            </select>
+
+            <select name="pista" class="filter-select">
+                <option value="">Track</option>
+                {% for pista in pistas %}
+                    <option value="{{ pista.id }}">{{ pista.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </form>
+</section>

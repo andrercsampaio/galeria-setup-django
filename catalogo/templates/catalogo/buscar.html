@@ -1,0 +1,44 @@
+{% extends 'catalogo/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'catalogo/partials/_barra_busca.html' %}
+
+<section style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <h2 style="color: #fff; margin-bottom: 20px;">
+        Resultados para: <span style="color: #04d361;">"{{ termo }}"</span>
+    </h2>
+
+    <div style="display: grid; grid-template-columns: 1fr; gap: 15px;">
+        {% for setup in setups %}
+            <div style="background: #19191c; border: 1px solid #29292e; padding: 20px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s;" onmouseover="this.style.borderColor='#04d361'" onmouseout="this.style.borderColor='#29292e'">
+                
+                <div>
+                    <h3 style="margin: 0; color: #fff;">{{ setup.carro.nome }}</h3>
+                    <p style="margin: 5px 0; color: #7c7c8a; font-size: 0.9rem;">
+                        📍 {{ setup.pista.nome }} | ⚙️ {{ setup.nome_config }}
+                    </p>
+                    <span style="font-size: 0.8rem; color: #8257e5;">Adicionado em: {{ setup.data_criacao|date:"d/m/Y" }}</span>
+                </div>
+
+                <div style="text-align: right;">
+                    {% if setup.arquivo %}
+                        <a href="{{ setup.arquivo.url }}" style="background: #04d361; color: #000; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold; font-size: 0.8rem;">
+                            📥 DOWNLOAD .STO
+                        </a>
+                    {% else %}
+                        <span style="color: #444;">Arquivo indisponível</span>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% empty %}
+            <div style="text-align: center; padding: 80px 0;">
+                <h3 style="color: #7c7c8a;">Nenhum setup encontrado para essa busca. 🏎️💨</h3>
+                <p><a href="{% url 'index' %}" style="color: #04d361;">Ver todos os carros da garagem</a></p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% load static %}
+{% load static %}
+
+<style>
+    .logo-imagem {
+    height: 40px; /* Ajuste a altura para combinar com o menu */
+    width: auto;  /* Mantém a proporção da largura */
+    display: block;
+    object-fit: contain;
+    }
+
+    .menu-superior .logo-area {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espaço entre a imagem e o texto */
+    text-decoration: none;
+    color: #fff;
+    }
+
+    .menu-superior {
+        background-color: #ffffff; /* Cinza bem escuro, quase preto */
+        border-bottom: 2px solid #29292e; /* Uma linha fina de separação */
+        padding: 10px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #fff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .menu-superior .logo-area {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: #fff;
+    }
+
+    .menu-superior .logo-area .icone {
+        color: #04d361; /* Verde neon para destacar o ícone */
+        font-size: 1.5rem;
+    }
+
+    .menu-superior .nav-links {
+        display: flex;
+        gap: 20px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .menu-superior .nav-links a {
+        text-decoration: none;
+        color: #000000; 
+        font-size: 1rem;
+        transition: color 0.3s ease; /* Efeito suave no hover */
+    }
+
+    .menu-superior .nav-links a:hover {
+        color: #04d361; /* Links ficam verdes ao passar o mouse */
+    }
+
+    .menu-superior .login-btn {
+        background-color: #8257e5; /* Roxo vibrante */
+        color: #fff;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .menu-superior .login-btn:hover {
+        background-color: #4c00ff; /* Roxo mais claro ao passar o mouse */
+    }
+</style>
+
+{% load static %}<header class="menu-superior">
+    <a href="{% url 'index' %}" class="logo-area">
+        <img src="{% static 'imagem/carneiro.jpg' %}" alt="Logo Galeria Setup" class="logo-imagem">
+        <span style="font-weight: bold; font-size: 1.2rem;">Galeria Setup</span>
+    </a>
+
+    <nav>
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}">Início</a></li>
+            <li><a href="{% url 'todas_as_pistas' %}">Todas as Pistas</a></li> <li><a href="{% url 'buscar' %}">Buscar</a></li> </ul>
+    </nav>
+
+    <div>
+        <a href="{% url 'admin:index' %}" target="_blank">
+            <button class="login-btn">Acessar Painel</button>
+        </a>
+    </div>
+</header>

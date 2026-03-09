@@ -1,0 +1,91 @@
+{% load static %}
+
+<style>
+    .footer-container {
+        background-color: #0b0b0c; /* Fundo ainda mais escuro que o body */
+        border-top: 1px solid #29292e;
+        padding: 40px 20px 20px 20px;
+        margin-top: 60px; /* Garante que o rodapé não fique colado no conteúdo */
+        color: #7c7c8a;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+    .footer-info h4 {
+        color: #fff;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+
+    .footer-links {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-links li {
+        margin-bottom: 10px;
+    }
+
+    .footer-links a {
+        text-decoration: none;
+        color: #7c7c8a;
+        transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+        color: #04d361; /* Verde neon no hover */
+    }
+
+    .footer-bottom {
+        max-width: 1200px;
+        margin: 40px auto 0 auto;
+        padding-top: 20px;
+        border-top: 1px solid #202024;
+        text-align: center;
+        font-size: 0.85rem;
+    }
+
+    .footer-bottom strong {
+        color: #8257e5; /* Roxo nos créditos */
+    }
+</style>
+
+<footer class="footer-container">
+    <div class="footer-content">
+        <div class="footer-info" style="flex: 1; min-width: 250px;">
+            <h4>🏎️ Galeria Setup</h4>
+            <p>O seu hub central para os melhores setups de iRacing. Criado para pilotos que buscam consistência e velocidade.</p>
+        </div>
+
+        <div class="footer-info">
+            <h4>Navegação</h4>
+            <ul class="footer-links">
+                <li><a href="{% url 'index' %}">Início</a></li>
+                <li><a href="{% url 'buscar' %}">Pesquisar Setups</a></li>
+                <li><a href="#">Calendário de Pistas</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-info">
+            <h4>Links Úteis</h4>
+            <ul class="footer-links">
+                <li><a href="https://github.com/seu-perfil" target="_blank">Meu GitHub</a></li>
+                <li><a href="https://www.alura.com.br" target="_blank">Aprenda Django na Alura</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 Galeria Setup. Desenvolvido com 🏁(GEMINi) por <strong>André</strong>.</p>
+    </div>
+</footer>

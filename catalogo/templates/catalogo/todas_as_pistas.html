@@ -1,0 +1,40 @@
+{% extends 'catalogo/base.html' %}
+{% load static %}
+
+{% block content %}
+{% include 'catalogo/partials/_barra_busca.html' %}   
+<section style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
+    
+    <div style="margin-bottom: 40px;">
+        <h1 style="font-size: 2.5rem; margin: 0;">Circuitos <span style="color: #04d361;">Disponíveis</span></h1>
+        <p style="color: #7c7c8a;">Selecione uma pista para ver os setups de cada categoria.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px;">
+        {% for pista in pistas %}
+        <div style="background: #19191c; border: 1px solid #29292e; border-radius: 12px; padding: 25px; transition: 0.3s; position: relative; overflow: hidden;" 
+             onmouseover="this.style.borderColor='#04d361'; this.style.transform='scale(1.02)'" 
+             onmouseout="this.style.borderColor='#29292e'; this.style.transform='scale(1)'">
+            
+            <div style="position: absolute; top: 15px; right: 15px; background: #202024; color: #04d361; padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; border: 1px solid #29292e;">
+                {{ pista.total_setups }} SETUPS
+            </div>
+
+            <div style="margin-top: 10px;">
+                <h3 style="margin: 0; color: #fff; font-size: 1.3rem;">{{ pista.nome }}</h3>
+                <p style="margin: 5px 0 20px 0; color: #7c7c8a; font-size: 0.9rem; display: flex; align-items: center; gap: 5px;">
+                    📍 {{ pista.localidade }}
+                </p>
+            </div>
+
+            <a href="{% url 'explorar_pista' pista.id %}" style="display: block; text-align: center; background: #8257e5; color: #fff; text-decoration: none; padding: 12px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; transition: background 0.3s;">
+                EXPLORAR PISTA
+            </a>
+        </div>
+        {% empty %}
+        <p style="color: #7c7c8a;">Nenhuma pista cadastrada ainda.</p>
+        {% endfor %}
+    </div>
+
+</section>
+{% endblock %}
