@@ -1,7 +1,7 @@
-{% extends 'catalogo/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-{% include 'catalogo/partials/_barra_busca.html' %} 
+{% include 'partials/_barra_busca.html' %} 
 <section style="padding: 40px; max-width: 900px; margin: 0 auto;">
     
     <div style="background: #202024; padding: 30px; border-radius: 12px; margin-bottom: 30px; border-left: 5px solid #04d361;">
@@ -49,7 +49,7 @@
     </div>
 
     <p style="margin-top: 30px;">
-        <a href="{% url 'explorar_pista' pista.id %}" style="color: #7c7c8a; text-decoration: none;">← Voltar para todas as pistas</a>
+        <a href="{% url 'todas_as_pistas' %}" style="color: #7c7c8a; text-decoration: none;">← Voltar para todas as pistas</a>
     </p>
 
 </section>

@@ -1,8 +1,8 @@
-{% extends 'catalogo/base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
-{% include 'catalogo/partials/_barra_busca.html' %}
+{% include 'partials/_barra_busca.html' %}
 
 <section class="lista-carros" style="padding: 40px 20px; max-width: 1200px; margin: 0 auto;">
     
@@ -12,7 +12,7 @@
 
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px;">
         {% for carro in carros %}
-            {% include 'catalogo/partials/_carro.html' %}
+            {% include 'partials/_carro.html' %}
         {% empty %}
             <div style="grid-column: 1 / -1; text-align: center; padding: 50px; color: #7c7c8a;">
                 <p>A garagem está vazia no momento. Cadastre novos carros no painel administrativo!</p>
