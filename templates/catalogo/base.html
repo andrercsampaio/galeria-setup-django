@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galeria Setup</title>
+    <style>
+        body {
+            background-color: #121214;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Container que segura Sidebar + Conteúdo */
+        .wrapper {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Estilização da Barra Lateral */
+        .sidebar {
+            width: 260px;
+            background-color: #19191c;
+            border-right: 1px solid #29292e;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .sidebar-title {
+            font-size: 0.8rem;
+            color: #7c7c8a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Botões da Sidebar */
+        .sidebar-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background-color: transparent;
+            color: #e1e1e6;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .sidebar-btn:hover {
+            background-color: #29292e;
+            color: #04d361;
+            border-color: #04d361;
+        }
+
+        .sidebar-btn.active {
+            background-color: #8257e5;
+            color: #fff;
+        }
+
+        /* Área do Conteúdo Principal */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .wrapper { flex-direction: column; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #29292e; }
+        }
+    </style>
+</head>
+<body>
+    
+    {% include 'catalogo/partials/_menu.html' %}
+
+    <div class="wrapper">
+        <aside class="sidebar">
+            <p class="sidebar-title">Menu do Piloto</p>
+            
+            <a href="{% url 'index' %}" class="sidebar-btn">🏠 Início</a>
+            
+            {% if user.is_authenticated %}
+                <a href="#" class="sidebar-btn">🏎️ Meus Setups</a>
+                <a href="#" class="sidebar-btn" style="color: #04d361; border-color: rgba(4, 211, 97, 0.3);">➕ Cadastrar Setup</a>
+                <a href="#" class="sidebar-btn">⭐ Favoritos</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="sidebar-btn">🔑 Entrar / Login</a>
+                <a href="#" class="sidebar-btn">📝 Cadastrar-se</a>
+            {% endif %}
+
+            <hr style="border: 0; border-top: 1px solid #29292e; margin: 20px 0;">
+            <p class="sidebar-title">Comunidade</p>
+            <a href="{% url 'todas_as_pistas' %}" class="sidebar-btn">🏁 Pistas</a>
+            <a href="#" class="sidebar-btn">🏆 Rankings</a>
+        </aside>
+
+        <main class="main-content">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+    {% include 'catalogo/partials/_footer.html' %}
+
+</body>
+</html>
