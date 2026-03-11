@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section style="padding: 40px; max-width: 500px; margin: 0 auto; background: #19191c; border-radius: 12px; border: 1px solid #29292e;">
+    <h1 style="color: #04d361; margin-bottom: 30px;">Cadastro de Piloto</h1>
+    
+    <form action="{% url 'cadastro' %}" method="POST">
+        {% csrf_token %}
+        
+        {% for field in form.visible_fields %}
+            <div style="margin-bottom: 20px;">
+                <label for="{{ field.id_for_label }}" style="display: block; margin-bottom: 8px; color: #7c7c8a;">
+                    {{ field.label }}
+                </label>
+                {{ field }}
+
+                {% if field.errors %}
+                    {% for error in field.errors %}
+                        <p style="color: #ff4747; font-size: 0.8rem; margin-top: 5px;">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+             </div>
+        {% endfor %}
+
+        <button type="submit" class="sidebar-btn" style="background: #04d361; color: #000; width: 100%; font-weight: bold; border: none; cursor: pointer; padding: 15px;">
+            CRIAR MINHA CONTA
+        </button>
+    </form>
+</section>
+{% endblock %}

@@ -17,13 +17,8 @@
             min-height: 100vh;
         }
 
-        /* Container que segura Sidebar + Conteúdo */
-        .wrapper {
-            display: flex;
-            flex: 1;
-        }
+        .wrapper { display: flex; flex: 1; }
 
-        /* Estilização da Barra Lateral */
         .sidebar {
             width: 260px;
             background-color: #19191c;
@@ -43,7 +38,6 @@
             font-weight: bold;
         }
 
-        /* Botões da Sidebar */
         .sidebar-btn {
             display: flex;
             align-items: center;
@@ -64,16 +58,7 @@
             border-color: #04d361;
         }
 
-        .sidebar-btn.active {
-            background-color: #8257e5;
-            color: #fff;
-        }
-
-        /* Área do Conteúdo Principal */
-        .main-content {
-            flex: 1;
-            padding: 20px;
-        }
+        .main-content { flex: 1; padding: 20px; }
 
         @media (max-width: 768px) {
             .wrapper { flex-direction: column; }
@@ -89,24 +74,41 @@
         <aside class="sidebar">
             <p class="sidebar-title">Menu do Piloto</p>
             
-            <a href="{% url 'index' %}" class="sidebar-btn">🏠 Início</a>
-            
             {% if user.is_authenticated %}
-                <a href="#" class="sidebar-btn">🏎️ Meus Setups</a>
-                <a href="#" class="sidebar-btn" style="color: #04d361; border-color: rgba(4, 211, 97, 0.3);">➕ Cadastrar Setup</a>
-                <a href="#" class="sidebar-btn">⭐ Favoritos</a>
-            {% else %}
-                <a href="{% url 'login' %}" class="sidebar-btn">🔑 Entrar / Login</a>
-                <a href="#" class="sidebar-btn">📝 Cadastrar-se</a>
+                <p class="sidebar-title" style="color: #04d361; margin-bottom: 5px;">🏁 Bem-vindo, {{ user.username }}!</p>
+                <p style="font-size: 0.7rem; color: #7c7c8a; margin-top: 0; margin-bottom: 20px;">
+                    {{ user.first_name }}
+                </p>
             {% endif %}
 
-            <hr style="border: 0; border-top: 1px solid #29292e; margin: 20px 0;">
-            <p class="sidebar-title">Comunidade</p>
+            <a href="{% url 'index' %}" class="sidebar-btn">🏠 Início</a>
             <a href="{% url 'todas_as_pistas' %}" class="sidebar-btn">🏁 Pistas</a>
-            <a href="#" class="sidebar-btn">🏆 Rankings</a>
+
+            <hr style="border: 0; border-top: 1px solid #29292e; margin: 10px 0;">
+
+            {% if user.is_authenticated %}
+                <p class="sidebar-title">Minha Garagem</p>
+                <a href="#" class="sidebar-btn">🏎️ Meus Setups</a>
+                <a href="#" class="sidebar-btn" style="color: #04d361; border-color: rgba(4, 211, 97, 0.3);">➕ Cadastrar Setup</a>
+                
+                <hr style="border: 0; border-top: 1px solid #29292e; margin: 15px 0;">
+                
+                <p class="sidebar-title">Comunidade</p>
+                <a href="#" class="sidebar-btn">➕ Publicar Setup</a>
+                <a href="#" class="sidebar-btn">🏆 Rankings</a>
+
+                <hr style="border: 0; border-top: 1px solid #29292e; margin: 15px 0;">
+                <a href="{% url 'logout' %}" class="sidebar-btn" style="color: #ff4747; border-color: rgba(255, 71, 71, 0.3);">🚪 Sair / Logout</a>
+            {% else %}
+                <p class="sidebar-title">Acesso</p>
+                <a href="{% url 'login' %}" class="sidebar-btn">🔑 Entrar / Login</a>
+                <a href="{% url 'cadastro' %}" class="sidebar-btn">📝 Cadastrar-se</a>
+            {% endif %}
         </aside>
 
         <main class="main-content">
+            {% include 'partials/_alertas.html' %}
+            
             {% block content %}{% endblock %}
         </main>
     </div>

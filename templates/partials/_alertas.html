@@ -1,0 +1,33 @@
+{% if messages %}
+    {% for message in messages %}
+        <div style="
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            animation: slideIn 0.5s ease-out;
+            {% if message.tags == 'success' %}
+                background-color: rgba(4, 211, 97, 0.1);
+                color: #04d361;
+                border: 1px solid #04d361;
+            {% else %}
+                background-color: rgba(255, 71, 71, 0.1);
+                color: #ff4747;
+                border: 1px solid #ff4747;
+            {% endif %}
+        ">
+            {% if message.tags == 'success' %} ✅ {% else %} ⚠️ {% endif %}
+            {{ message }}
+        </div>
+    {% endfor %}
+
+    <style>
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+{% endif %}
