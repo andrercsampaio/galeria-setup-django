@@ -79,7 +79,7 @@
     
     <form action="{% url 'buscar' %}" method="GET" class="search-form">
         <div class="main-search-wrapper">
-            <input type="text" name="q" class="main-search-input" placeholder="Find the perfect setup...">
+            <input type="text" name="q" class="main-search-input" placeholder="encontre o setup perfeito">
             <button type="submit" class="btn-search-icon">
                 🔍
             </button>
@@ -87,14 +87,14 @@
 
         <div class="filters-wrapper">
             <select name="carro" class="filter-select">
-                <option value="">Car</option>
+                <option value="">Carro</option>
                 {% for carro in carros %}
                     <option value="{{ carro.id }}">{{ carro.nome }}</option>
                 {% endfor %}
             </select>
 
             <select name="pista" class="filter-select">
-                <option value="">Track</option>
+                <option value="">Pista</option>
                 {% for pista in pistas %}
                     <option value="{{ pista.id }}">{{ pista.nome }}</option>
                 {% endfor %}

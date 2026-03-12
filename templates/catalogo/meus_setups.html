@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container-garagem" style="padding: 20px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <h1 style="color: #04d361; margin: 0; font-size: 1.8rem;">🏎️ Minha Garagem</h1>
+        
+        <a href="#" class="sidebar-btn" style="background: #04d361; color: #000; padding: 8px 20px; font-size: 0.85rem; font-weight: bold; border: none;">
+            + NOVO SETUP
+        </a>
+    </div>
+
+    <form method="GET" style="display: flex; gap: 15px; margin-bottom: 40px; background: #19191c; padding: 20px; border-radius: 8px; border: 1px solid #29292e;">
+        <div style="flex: 1;">
+            <label style="color: #7c7c8a; font-size: 0.8rem; display: block; margin-bottom: 5px;">Filtrar por Carro</label>
+            <select name="carro" class="sidebar-btn" style="width: 100%; background: #121214;">
+                <option value="">Todos os Carros</option>
+                {% for carro in carros %}
+                    <option value="{{ carro.id }}">{{ carro.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div style="flex: 1;">
+            <label style="color: #7c7c8a; font-size: 0.8rem; display: block; margin-bottom: 5px;">Filtrar por Pista</label>
+            <select name="pista" class="sidebar-btn" style="width: 100%; background: #121214;">
+                <option value="">Todas as Pistas</option>
+                {% for pista in pistas %}
+                    <option value="{{ pista.id }}">{{ pista.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="sidebar-btn" style="align-self: flex-end; padding: 12px 25px;">🔍 Filtrar</button>
+    </form>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+        {% for setup in setups %}
+            <div style="background: #19191c; border: 1px solid #29292e; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+                
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <div>
+                            <span style="color: #8257e5; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">{{ setup.carro.categoria }}</span>
+                            <h3 style="margin: 5px 0; color: #fff; font-size: 1.2rem;">{{ setup.nome_versao }}</h3>
+                            <p style="color: #7c7c8a; font-size: 0.9rem; margin: 0;">📍 {{ setup.pista.nome }}</p>
+                        </div>
+                        
+                        <div style="display: flex; gap: 5px;">
+                            <a href="#" title="Editar" style="background: #29292e; color: #38b6ff; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; text-decoration: none; border: 1px solid #38b6ff;">
+                                📝(atualizar)
+                            </a>
+                            <a href="#" title="Excluir" style="background: #29292e; color: #ff4747; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; text-decoration: none; border: 1px solid #ff4747;">
+                                🗑️(deletar)
+                            </a>
+                        </div>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid #29292e; margin: 15px 0;">
+
+                    <p style="color: #7c7c8a; font-size: 0.75rem; margin-bottom: 10px; font-weight: bold; text-transform: uppercase;">Downloads:</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                        
+                        {% if setup.config_qualy %}
+                            <a href="{{ setup.config_qualy.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361;">⏱️ Qualy</a>
+                        {% endif %}
+
+                        {% if setup.config_qualy_safe %}
+                            <a href="{{ setup.config_qualy_safe.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361;">🛡️ Q. Safe</a>
+                        {% endif %}
+
+                        {% if setup.config_qualy_rain %}
+                            <a href="{{ setup.config_qualy_rain.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #38b6ff;">🌧️ Q. Rain</a>
+                        {% endif %}
+
+                        {% if setup.config_race %}
+                            <a href="{{ setup.config_race.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361;">🏁 Race</a>
+                        {% endif %}
+
+                        {% if setup.config_race_safe %}
+                            <a href="{{ setup.config_race_safe.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361;">🛡️ R. Safe</a>
+                        {% endif %}
+
+                        {% if setup.config_race_rain %}
+                            <a href="{{ setup.config_race_rain.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #38b6ff;">🌧️ R. Rain</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div style="margin-top: 20px; font-size: 0.65rem; color: #4d4d57; text-align: right; border-top: 1px solid #29292e; padding-top: 10px;">
+                    📅 Atualizado em: {{ setup.data_criacao|date:"d/m/Y" }}
+                </div>
+            </div>
+        {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 60px; color: #7c7c8a; background: #19191c; border-radius: 12px; border: 2px dashed #29292e;">
+                <p style="font-size: 1.2rem; margin-bottom: 10px;">Sua garagem está vazia.</p>
+                <p style="font-size: 0.9rem;">Clique no botão <strong>+ NOVO SETUP</strong> acima para começar.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

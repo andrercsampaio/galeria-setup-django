@@ -83,17 +83,18 @@
 
             <a href="{% url 'index' %}" class="sidebar-btn">🏠 Início</a>
             <a href="{% url 'todas_as_pistas' %}" class="sidebar-btn">🏁 Pistas</a>
+            <a href="{% url 'todos_os_carros' %}" class="sidebar-btn">🏎️💨 Carros</a>
 
             <hr style="border: 0; border-top: 1px solid #29292e; margin: 10px 0;">
 
             {% if user.is_authenticated %}
                 <p class="sidebar-title">Minha Garagem</p>
-                <a href="#" class="sidebar-btn">🏎️ Meus Setups</a>
-                <a href="#" class="sidebar-btn" style="color: #04d361; border-color: rgba(4, 211, 97, 0.3);">➕ Cadastrar Setup</a>
+                <a href="{% url 'meus_setups' %}" class="sidebar-btn">🔧 Meus Setups</a>
                 
                 <hr style="border: 0; border-top: 1px solid #29292e; margin: 15px 0;">
                 
                 <p class="sidebar-title">Comunidade</p>
+                <a href="{% url 'setups_comunidade' %}" class="sidebar-btn">🔧 Setups da comunidade</a>
                 <a href="#" class="sidebar-btn">➕ Publicar Setup</a>
                 <a href="#" class="sidebar-btn">🏆 Rankings</a>
 

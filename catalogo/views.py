@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Count
 from django.contrib import messages
-from .models import Carro, Pista, Setup
+from .models import Carro, Pista, SetupPublico, Setup
 
 def index(request):
     if not request.user.is_authenticated:
@@ -18,26 +18,34 @@ def detalhe_carro(request, carro_id):
         messages.error(request, "Acesso restrito! Faça login para ver os setups.")
         return redirect('login')
     carro = get_object_or_404(Carro, pk=carro_id)
-    pistas_disponiveis = Pista.objects.filter(setups__carro=carro).distinct()
+    pistas_disponiveis = Pista.objects.filter(setups_privados__carro=carro).distinct()
     return render(request, 'catalogo/detalhe_carro.html', {
         'carro': carro,
         'pistas': pistas_disponiveis
     })
 
+
 def mostrar_todas_as_pistas(request):
-    pistas = Pista.objects.annotate(total_setups=Count('setups'))
+    pistas = Pista.objects.all()
     return render(request, 'catalogo/todas_as_pistas.html', {'pistas': pistas})
+
+
+def mostrar_todas_os_carros(request):
+    carros = Carro.objects.filter(publicado=True)
+    return render(request, 'catalogo/todos_os carros.html', {'carros':carros})
+
 
 def explorar_pista(request, pista_id):
     if not request.user.is_authenticated:
         messages.error(request, "Acesso restrito! Faça login para ver os setups.")
         return redirect('login')
     pista = get_object_or_404(Pista, pk=pista_id)
-    carros_disponiveis = Carro.objects.filter(setups__pista=pista).distinct()
+    carros_disponiveis = Carro.objects.all()
     return render(request, 'catalogo/explorar_pista.html', {
         'pista': pista,
         'carros': carros_disponiveis
     })
+
 
 def setups_por_pista(request, carro_id, pista_id):
     if not request.user.is_authenticated:
@@ -52,13 +60,75 @@ def setups_por_pista(request, carro_id, pista_id):
         'setups': setups
     })
 
+
 def buscar(request):
+    
     if not request.user.is_authenticated:
         messages.error(request, "Acesso restrito! Faça login para ver os setups.")
         return redirect('login')
-    setups = Setup.objects.filter(carro__publicado=True).order_by('-data_criacao')
+    setups = SetupPublico.objects.filter(carro__publicado=True).order_by('-data_criacao')
     if 'q' in request.GET:
         termo = request.GET['q']
         if termo:
             setups = setups.filter(carro__nome__icontains=termo) | setups.filter(pista__nome__icontains=termo)
     return render(request, 'catalogo/buscar.html', {'setups': setups, 'termo': request.GET.get('q', '')})
+
+
+def meus_setups(request):
+    if not request.user.is_authenticated:
+        messages.error(request, "Acesso restrito! Faça login para ver os setups.")
+        return redirect('login')
+    
+    setups = Setup.objects.all()
+    carros = Carro.objects.all()
+    pistas = Pista.objects.all()
+
+
+    return render(request, 'catalogo/meus_setups.html', {
+        'carros': carros,
+        'pistas': pistas,
+        'setups': setups
+    })
+
+
+def setups_comunidade (request):
+    if not request.user.is_authenticated:
+        messages.error(request, "Acesso restrito! Faça login para ver os setups.")
+        return redirect('login')
+    
+    setups = SetupPublico.objects.all().order_by('-data_criacao')
+
+    carro_id = request.GET.get('carro')
+    pista_id = request.GET.get('pista')
+
+    if carro_id:
+        setups = setups.filter(carro_id=carro_id)
+    if pista_id:
+        setups = setups.filter(pista_id=pista_id)
+
+    context = {
+        'setups_publicos': setups,
+        'carros': Carro.objects.all(),
+        'pistas': Pista.objects.all(),
+    }
+    return render(request, 'catalogo/setups_comunidade.html', context)
+
+
+def setups_comunidade_pesquisa(request):
+    carro_id = request.GET.get('carro')
+    pista_id = request.GET.get('pista')
+
+    setups = SetupPublico.objects.all()
+
+    if carro_id:
+        setups = setups.filter(carro_id=carro_id)
+    
+    if pista_id:
+        setups = setups.filter(pista_id=pista_id)
+
+    context = {
+        'setups_publicos': setups,
+        'carros': Carro.objects.all(),
+        'pistas': Pista.objects.all(),
+    }
+    return render(request, 'catalogo/setups_comunidade.html', context)

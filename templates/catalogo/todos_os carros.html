@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section style="padding: 20px;">
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h1 style="color: #04d361; font-size: 2.5rem; margin-bottom: 10px;">🏎️ Garagem de Elite</h1>
+        <p style="color: #7c7c8a;">Selecione um veículo para explorar os setups disponíveis.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+        {% for carro in carros %}
+            <div style="background: #19191c; border: 1px solid #29292e; border-radius: 12px; overflow: hidden; transition: 0.3s; cursor: pointer;" 
+                 onmouseover="this.style.borderColor='#04d361'" onmouseout="this.style.borderColor='#29292e'">
+                
+                <div style="width: 100%; height: 180px; overflow: hidden; background: #121214;">
+                    {% if carro.foto %}
+                        <img src="{{ carro.foto.url }}" alt="{{ carro.nome }}" style="width: 100%; height: 100%; object-fit: cover;">
+                    {% else %}
+                        <div style="display: flex; align-items: center; justify-content: center; height: 100%; color: #4d4d57;">
+                            📷 Sem Foto
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div style="padding: 20px;">
+                    <span style="color: #8257e5; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">{{ carro.categoria }}</span>
+                    <h3 style="color: #fff; margin: 10px 0;">{{ carro.nome }}</h3>
+                    
+                    <hr style="border: 0; border-top: 1px solid #29292e; margin: 15px 0;">
+
+                    <a href="{% url 'setups_comunidade' %}?carro={{ carro.id }}" 
+                       class="sidebar-btn" 
+                       style="background: #04d361; color: #000; text-align: center; justify-content: center; font-weight: bold; text-decoration: none; display: flex;">
+                        VER SETUPS
+                    </a>
+                </div>
+            </div>
+        {% empty %}
+            <div style="grid-column: 1/-1; text-align: center; padding: 100px; color: #7c7c8a;">
+                <p style="font-size: 1.2rem;">Nenhum carro foi publicado ainda.</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
