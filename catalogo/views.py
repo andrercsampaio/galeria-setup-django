@@ -2,6 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Count
 from django.contrib import messages
 from .models import Carro, Pista, SetupPublico, Setup
+from catalogo.forms import SetupForm
+
+
 
 def index(request):
     if not request.user.is_authenticated:
@@ -89,6 +92,54 @@ def meus_setups(request):
         'pistas': pistas,
         'setups': setups
     })
+
+
+def novo_setup_privado(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    if request.method == 'POST':
+        form = SetupForm(request.POST, request.FILES)
+        if form.is_valid():
+            setup = form.save(commit=False)
+            setup.usuario = request.user
+            setup.save()
+            messages.success(request, "Setup salvo com sucesso!")
+            return redirect('meus_setups')
+    else:
+        # É aqui que a mágica acontece: quando você ENTRA na página,
+        # ele cria o formulário vazio para ser exibido.
+        form = SetupForm()
+    
+    return render(request, 'catalogo/meu_setup_novo.html', {'form': form})
+
+def editar_setup_privado(request, setup_id):
+    # Busca o setup e garante que pertence ao utilizador logado
+    setup = get_object_or_404(Setup, pk=setup_id, usuario=request.user)
+    
+    if request.method == 'POST':
+        # Importante: instance=setup diz que é um UPDATE e não um INSERT
+        form = SetupForm(request.POST, request.FILES, instance=setup)
+        if form.is_valid():
+            setup_editado = form.save(commit=False)
+            setup_editado.usuario = request.user # Garante que o dono não muda
+            setup_editado.save()
+            messages.success(request, "Setup atualizado com sucesso!")
+            return redirect('meus_setups')
+    else:
+        form = SetupForm(instance=setup)
+    
+    return render(request, 'catalogo/meu_setup_novo.html', {
+        'form': form, 
+        'editando': True
+    })
+
+def deletar_setup_privado(request, setup_id):
+    setup = get_object_or_404(Setup, pk=setup_id, usuario=request.user)
+    setup.delete()
+    messages.success(request, "Setup removido da garagem.")
+    return redirect('meus_setups')
+
 
 
 def setups_comunidade (request):

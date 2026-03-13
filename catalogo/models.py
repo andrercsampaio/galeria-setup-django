@@ -1,6 +1,9 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.auth.models import User
+from django.core.validators import FileExtensionValidator
+
+
 
 ESCOLHAS_CARRO = [
     ('GT3', 'GT3'),

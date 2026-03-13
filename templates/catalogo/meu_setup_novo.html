@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section style="padding: 40px; max-width: 800px; margin: 0 auto;">
+    <div style="margin-bottom: 30px;">
+        <h1 style="color: #04d361; font-size: 2rem;">
+            {% if editando %} 📝 Editar Setup {% else %} 🏎️ Novo Setup {% endif %}
+        </h1>
+        <p style="color: #7c7c8a;">Preencha os dados e faça o upload dos seus arquivos .sto</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" 
+      style="background: #19191c; padding: 30px; border-radius: 12px; border: 1px solid #29292e;">
+        {% csrf_token %}
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div>
+                <label style="color: #04d361; font-weight: bold; display: block; margin-bottom: 8px;">Carro</label>
+                {{ form.carro }}
+            </div>
+            <div>
+                <label style="color: #04d361; font-weight: bold; display: block; margin-bottom: 8px;">Pista</label>
+                {{ form.pista }}
+            </div>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <label style="color: #04d361; font-weight: bold; display: block; margin-bottom: 8px;">Nome da Versão</label>
+            {{ form.nome_versao }}
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #29292e; margin: 30px 0;">
+
+        <h3 style="color: #fff; margin-bottom: 20px;">📂 Upload de Arquivos (.sto)</h3>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+            <div style="background: #333423; padding: 15px; border-radius: 8px;">
+                <label style="color: #8257e5; font-size: 0.8rem; font-weight: bold;">⏱️ QUALY</label>
+                {{ form.config_qualy }}
+            </div>
+            <div style="background: #333423; padding: 15px; border-radius: 8px;">
+                <label style="color: #8257e5; font-size: 0.8rem; font-weight: bold;">🛡️ Q_SAFE</label>
+                {{ form.config_qualy_safe }} </div>
+            <div style="background: #333423; padding: 15px; border-radius: 8px;">
+                <label style="color: #38b6ff; font-size: 0.8rem; font-weight: bold;">🌧️ Q_RAIN</label>
+                {{ form.config_qualy_rain }}
+            </div>
+
+            <div style="background: #333423; padding: 15px; border-radius: 8px;">
+                <label style="color: #04d361; font-size: 0.8rem; font-weight: bold;">🏁 RACE</label>
+                {{ form.config_race }}
+            </div>
+            <div style="background: #333423; padding: 15px; border-radius: 8px;">
+                <label style="color: #04d361; font-size: 0.8rem; font-weight: bold;">🛡️ R_SAFE</label>
+                {{ form.config_race_safe }} </div>
+            <div style="background: #333423; padding: 15px; border-radius: 8px;">
+                <label style="color: #38b6ff; font-size: 0.8rem; font-weight: bold;">🌧️ R_RAIN</label>
+                {{ form.config_race_rain }}
+            </div>
+        </div>
+
+        <div style="display: flex; gap: 15px; margin-top: 40px;">
+            <button type="submit" class="sidebar-btn" style="background: #04d361; color: #000; border: none; font-weight: bold; flex: 2; padding: 15px; cursor: pointer;">
+                SALVAR NA GARAGEM
+            </button>
+            <a href="{% url 'meus_setups' %}" class="sidebar-btn" style="flex: 1; text-align: center; text-decoration: none; border-color: #ff4747; color: #ff4747; padding: 15px;">
+                CANCELAR
+            </a>
+        </div>
+    </form>
+</section>
+
+<style>
+    /* Estilização para os campos gerados pelo Django */
+    input[type="text"], select {
+        width: 100%;
+        padding: 12px;
+        background: #121214;
+        border: 1px solid #29292e;
+        color: #fff;
+        border-radius: 6px;
+        outline: none;
+    }
+    /* Estilização para os campos de ficheiro .sto */
+    input[type="file"] {
+        width: 100%;
+        color: #04d361 !important; /* Força o verde no texto "Nenhum arquivo selecionado" */
+        font-size: 0.8rem;
+        font-weight: bold;
+        margin-top: 8px;
+        background: transparent;
+    }
+
+    /* Estiliza especificamente o texto dentro do input no Chrome/Edge */
+    input[type="file"]::-webkit-file-upload-button {
+        background: #29292e;
+        color: #fff;
+        border: 1px solid #323238;
+        padding: 5px 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+</style>
+{% endblock %}

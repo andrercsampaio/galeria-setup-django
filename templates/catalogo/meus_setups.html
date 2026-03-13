@@ -5,7 +5,7 @@
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
         <h1 style="color: #04d361; margin: 0; font-size: 1.8rem;">🏎️ Minha Garagem</h1>
         
-        <a href="#" class="sidebar-btn" style="background: #04d361; color: #000; padding: 8px 20px; font-size: 0.85rem; font-weight: bold; border: none;">
+        <a href="{% url 'novo_setup_privado' %}" class="sidebar-btn" style="background: #04d361; color: #000; padding: 8px 20px; font-size: 0.85rem; font-weight: bold; border: none;">
             + NOVO SETUP
         </a>
     </div>
@@ -34,53 +34,55 @@
 
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
         {% for setup in setups %}
-            <div style="background: #19191c; border: 1px solid #29292e; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="background: #1d241f; border: 1px solid #29292e; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between;">
                 
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                         <div>
                             <span style="color: #8257e5; font-size: 0.7rem; font-weight: bold; text-transform: uppercase;">{{ setup.carro.categoria }}</span>
-                            <h3 style="margin: 5px 0; color: #fff; font-size: 1.2rem;">{{ setup.nome_versao }}</h3>
-                            <p style="color: #7c7c8a; font-size: 0.9rem; margin: 0;">📍 {{ setup.pista.nome }}</p>
+                            <h3 style="margin: 5px 0; color: #fff; font-size: 1.2rem;">{{ setup.carro.nome }}</h3>
+                            <p style="color: #7c7c8a; font-size: 0.9rem; margin: 0;">🏷️ {{ setup.nome_versao }}</p>
+                            <p style="color: #7c7c8a; font-size: 0.9rem; margin: 0;">/┆\ {{ setup.pista.nome }}</p>
                         </div>
                         
                         <div style="display: flex; gap: 5px;">
-                            <a href="#" title="Editar" style="background: #29292e; color: #38b6ff; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; text-decoration: none; border: 1px solid #38b6ff;">
+                            <a href="{% url 'editar_setup_privado' setup.id %}" title="Editar" style="background: #29292e; color: #38b6ff; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; text-decoration: none; border: 1px solid #38b6ff;">
                                 📝(atualizar)
                             </a>
-                            <a href="#" title="Excluir" style="background: #29292e; color: #ff4747; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; text-decoration: none; border: 1px solid #ff4747;">
-                                🗑️(deletar)
+                            <a href="{% url 'deletar_setup_privado' setup.id %}" 
+                                onclick="return confirm('Tem certeza que deseja remover este setup?')"
+                                style="background: #29292e; color: #ff3838; padding: 5px 8px; border-radius: 4px; font-size: 0.7rem; text-decoration: none; border: 1px solid #ff3838;" title="Excluir Setup"> 🗑️(deletar)
                             </a>
                         </div>
                     </div>
 
-                    <hr style="border: 0; border-top: 1px solid #29292e; margin: 15px 0;">
+                    <hr style="border: 0; border-top: 1px solid #c1ffd1; margin: 15px 0;">
 
-                    <p style="color: #7c7c8a; font-size: 0.75rem; margin-bottom: 10px; font-weight: bold; text-transform: uppercase;">Downloads:</p>
+                    <p style="color: #affeb7; font-size: 0.75rem; margin-bottom: 10px; font-weight: bold; text-transform: uppercase;">Downloads:</p>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                         
                         {% if setup.config_qualy %}
-                            <a href="{{ setup.config_qualy.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361;">⏱️ Qualy</a>
+                            <a href="{{ setup.config_qualy.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361; color: #fff !important;">⏱️ Qualy</a>
                         {% endif %}
 
                         {% if setup.config_qualy_safe %}
-                            <a href="{{ setup.config_qualy_safe.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361;">🛡️ Q. Safe</a>
+                            <a href="{{ setup.config_qualy_safe.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361; color: #fff !important;">🛡️ Q. Safe</a>
                         {% endif %}
 
                         {% if setup.config_qualy_rain %}
-                            <a href="{{ setup.config_qualy_rain.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #38b6ff;">🌧️ Q. Rain</a>
+                            <a href="{{ setup.config_qualy_rain.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #38b6ff; color: #fff !important;">🌧️ Q. Rain</a>
                         {% endif %}
 
                         {% if setup.config_race %}
-                            <a href="{{ setup.config_race.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361;">🏁 Race</a>
+                            <a href="{{ setup.config_race.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361; color: #fff !important;">🏁 Race</a>
                         {% endif %}
 
                         {% if setup.config_race_safe %}
-                            <a href="{{ setup.config_race_safe.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361;">🛡️ R. Safe</a>
+                            <a href="{{ setup.config_race_safe.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #04d361; color: #fff !important;">🛡️ R. Safe</a>
                         {% endif %}
 
                         {% if setup.config_race_rain %}
-                            <a href="{{ setup.config_race_rain.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #38b6ff;">🌧️ R. Rain</a>
+                            <a href="{{ setup.config_race_rain.url }}" class="sidebar-btn" style="font-size: 0.7rem; padding: 6px; justify-content: center; border-color: #38b6ff; color: #fff !important;">🌧️ R. Rain</a>
                         {% endif %}
                     </div>
                 </div>
