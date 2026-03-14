@@ -69,6 +69,21 @@
 <body>
     
     {% include 'partials/_menu.html' %}
+    {% if user.is_superuser %}
+        <div style="margin-top: 20px; padding-top: 10px; border-top: 1px dashed #444;">
+            <p style="color: #7c7c8a; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 10px;">Administração</p>
+            
+            <a href="{% url 'painel_moderacao' %}" class="sidebar-btn" 
+            style="background: #ff9000; color: #000; border: none; font-weight: bold; width: 100%; justify-content: center;">
+                ⚖️ MODERAÇÃO 
+                {% if setups_pendentes_count > 0 %}
+                    <span style="background: #fff; border-radius: 50%; padding: 2px 6px; margin-left: 5px; font-size: 0.7rem;">
+                        {{ setups_pendentes_count }}
+                    </span>
+                {% endif %}
+            </a>
+        </div>
+    {% endif %}
 
     <div class="wrapper">
         <aside class="sidebar">
@@ -95,7 +110,6 @@
                 
                 <p class="sidebar-title">Comunidade</p>
                 <a href="{% url 'setups_comunidade' %}" class="sidebar-btn">🔧 Setups da comunidade</a>
-                <a href="#" class="sidebar-btn">➕ Publicar Setup</a>
                 <a href="#" class="sidebar-btn">🏆 Rankings</a>
 
                 <hr style="border: 0; border-top: 1px solid #29292e; margin: 15px 0;">

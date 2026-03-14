@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section style="padding: 40px;">
+    <h1 style="color: #04d361; margin-bottom: 30px;">⚖️ Painel de Moderação</h1>
+    
+    <div style="background: #19191c; border-radius: 12px; border: 1px solid #29292e; overflow: hidden;">
+        <table style="width: 100%; border-collapse: collapse; color: #fff; text-align: left;">
+            <thead style="background: #121214; color: #7c7c8a; font-size: 0.8rem; text-transform: uppercase;">
+                <tr>
+                    <th style="padding: 20px;">Utilizador</th>
+                    <th style="padding: 20px;">Carro / Pista</th>
+                    <th style="padding: 20px;">Tipo</th>
+                    <th style="padding: 20px;">Ficheiro (Audit)</th>
+                    <th style="padding: 20px; text-align: center;">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for setup in setups %}
+                <tr style="border-bottom: 1px solid #29292e;">
+                    <td style="padding: 20px;">{{ setup.usuario.username }}</td>
+                    <td style="padding: 20px;">
+                        <span style="display: block; font-weight: bold;">{{ setup.carro.nome }}</span>
+                        <span style="color: #7c7c8a; font-size: 0.85rem;">{{ setup.pista.nome }}</span>
+                    </td>
+                    <td style="padding: 20px;">
+                        <span style="padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; background: #8257e5;">
+                            {{ setup.get_tipo_display }}
+                        </span>
+                    </td>
+                    <td style="padding: 20px;">
+                        <a href="{{ setup.config_race.url }}" style="color: #38b6ff; text-decoration: none; font-size: 0.85rem;">
+                            📥 Analisar Race.sto
+                        </a>
+                    </td>
+                    <td style="padding: 20px; text-align: center;">
+                        <div style="display: flex; gap: 10px; justify-content: center;">
+                            <a href="{% url 'aprovar_setup' setup.id %}" 
+                               style="background: #04d361; color: #000; padding: 8px 15px; border-radius: 4px; font-weight: bold; text-decoration: none;">
+                                APROVAR
+                            </a>
+                            <a href="{% url 'recusar_setup' setup.id %}" 
+                               onclick="return confirm('Eliminar este setup permanentemente?')"
+                               style="background: #ff4747; color: #fff; padding: 8px 15px; border-radius: 4px; text-decoration: none;">
+                                RECUSAR
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" style="padding: 60px; text-align: center; color: #7c7c8a;">
+                        ✅ Não há setups pendentes de análise.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}

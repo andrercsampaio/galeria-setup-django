@@ -39,6 +39,19 @@
                 </select>
             </div>
 
+            <div>
+                <label style="color: #04d361; font-weight: bold; display: block; margin-bottom: 10px;">🏁 Tipo</label>
+                <select name="tipo" class="sidebar-btn" style="width: 100%; background: #121214; border: 1px solid #29292e; color: white;">
+                    <option value="">Todos os Tipos</option>
+                    
+                    {% for valor, label in tipos %}
+                        <option value="{{ valor }}" {% if request.GET.tipo == valor %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
             <button type="submit" class="sidebar-btn" style="background: #8257e5; color: #fff; padding: 12px 30px; border: none; font-weight: bold;">
                 FILTRAR SETUP
             </button>
@@ -53,6 +66,9 @@
                 <div style="padding: 20px; border-bottom: 1px solid #29292e;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
                         <span style="background: #8257e5; color: white; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem;">{{ setup.carro.categoria }}</span>
+                        <span style="padding: 2px 8px; border-radius: 4px; font-size: 0.6rem; font-weight: bold; background: {% if setup.tipo == 'S' %}#8257e5{% else %}#04d361{% endif %}; color: white;">
+                            {{ setup.get_tipo_display }}
+                        </span>
                         <span style="color: #7c7c8a; font-size: 0.8rem;">👤 {{ setup.usuario.username }}</span>
                     </div>
                     <h3 style="color: #fff; margin: 15px 0 5px 0;">{{ setup.nome_versao }}</h3>

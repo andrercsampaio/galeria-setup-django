@@ -34,6 +34,9 @@ def mostrar_todas_as_pistas(request):
 
 
 def mostrar_todas_os_carros(request):
+    if not request.user.is_authenticated:
+        messages.error(request, "Acesso restrito! Faça login para ver os setups.")
+        return redirect('login')
     carros = Carro.objects.filter(publicado=True)
     return render(request, 'catalogo/todos_os carros.html', {'carros':carros})
 
@@ -65,7 +68,6 @@ def setups_por_pista(request, carro_id, pista_id):
 
 
 def buscar(request):
-    
     if not request.user.is_authenticated:
         messages.error(request, "Acesso restrito! Faça login para ver os setups.")
         return redirect('login')
@@ -82,7 +84,7 @@ def meus_setups(request):
         messages.error(request, "Acesso restrito! Faça login para ver os setups.")
         return redirect('login')
     
-    setups = Setup.objects.all()
+    setups = Setup.objects.filter(usuario=request.user).order_by('-data_criacao')
     carros = Carro.objects.all()
     pistas = Pista.objects.all()
 
@@ -96,6 +98,7 @@ def meus_setups(request):
 
 def novo_setup_privado(request):
     if not request.user.is_authenticated:
+        messages.error(request, "Acesso restrito! Faça login para ver os setups.")
         return redirect('login')
 
     if request.method == 'POST':
@@ -151,6 +154,7 @@ def setups_comunidade (request):
 
     carro_id = request.GET.get('carro')
     pista_id = request.GET.get('pista')
+    tipo_id = request.GET.get('tipo')
 
     if carro_id:
         setups = setups.filter(carro_id=carro_id)
@@ -161,6 +165,7 @@ def setups_comunidade (request):
         'setups_publicos': setups,
         'carros': Carro.objects.all(),
         'pistas': Pista.objects.all(),
+        'tipos': SetupPublico.TIPO_CHOICES
     }
     return render(request, 'catalogo/setups_comunidade.html', context)
 
@@ -183,3 +188,59 @@ def setups_comunidade_pesquisa(request):
         'pistas': Pista.objects.all(),
     }
     return render(request, 'catalogo/setups_comunidade.html', context)
+
+def compartilhar_setup(request, setup_id):
+    # Busca o setup privado do piloto
+    setup_privado = get_object_or_404(Setup, pk=setup_id, usuario=request.user)
+
+    if request.method == 'POST':
+        tipo_escolhido = request.POST.get('tipo')
+        
+        # Cria o registo na tabela pública (SetupPublico)
+        SetupPublico.objects.create(
+            usuario=request.user,
+            carro=setup_privado.carro,
+            pista=setup_privado.pista,
+            nome_versao=setup_privado.nome_versao,
+            tipo=tipo_escolhido,
+            # Copia as referências dos ficheiros .sto
+            config_qualy=setup_privado.config_qualy,
+            config_qualy_safe=setup_privado.config_qualy_safe,
+            config_qualy_rain=setup_privado.config_qualy_rain,
+            config_race=setup_privado.config_race,
+            config_race_safe=setup_privado.config_race_safe,
+            config_race_rain=setup_privado.config_race_rain,
+            publicado=False, # Fica invisível até aprovação
+            verificado=False
+        )
+        
+        messages.success(request, "Setup enviado! Estará disponível após a moderação.")
+        return redirect('meus_setups')
+
+    return render(request, 'catalogo/confirmar_compartilhamento.html', {'setup': setup_privado})
+from django.contrib.auth.decorators import user_passes_test
+
+# Função de segurança: apenas o dono do site (superuser) entra aqui
+def e_admin(user):
+    return user.is_superuser
+
+@user_passes_test(e_admin)
+def painel_moderacao(request):
+    # Procura apenas setups onde publicado é False
+    setups_pendentes = SetupPublico.objects.filter(publicado=False).order_by('-data_criacao')
+    return render(request, 'catalogo/moderacao.html', {'setups': setups_pendentes})
+
+@user_passes_test(e_admin)
+def aprovar_setup(request, setup_id):
+    setup = get_object_or_404(SetupPublico, pk=setup_id)
+    setup.publicado = True
+    setup.save()
+    messages.success(request, f"Setup {setup.nome_versao} aprovado e publicado!")
+    return redirect('painel_moderacao')
+
+@user_passes_test(e_admin)
+def recusar_setup(request, setup_id):
+    setup = get_object_or_404(SetupPublico, pk=setup_id)
+    setup.delete() # Remove o setup se for de loja paga
+    messages.warning(request, "Setup recusado e removido do sistema.")
+    return redirect('painel_moderacao')

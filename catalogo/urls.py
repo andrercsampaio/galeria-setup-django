@@ -19,6 +19,8 @@ urlpatterns = [
 
     # --- MINHA GARAGEM (PRIVADO) ---
     path('meus_setups/', views.meus_setups, name='meus_setups'),
+    path('meus_setups/compartilhar/<int:setup_id>/', views.compartilhar_setup, name='compartilhar_setup'),
+    
     
     # Rota Única para Criar: Mostra o formulário E salva os dados
     path('meus_setups/novo/', views.novo_setup_privado, name='novo_setup_privado'),
@@ -30,4 +32,10 @@ urlpatterns = [
     # --- COMUNIDADE (PÚBLICO) ---
     path('setups_comunidade/', views.setups_comunidade, name='setups_comunidade'),
     path('setups_comunidade_pesquisa/', views.setups_comunidade_pesquisa, name='setups_comunidade_pesquisa'),
+
+
+    # --- ADMIN / MODERAÇÃO ---
+    path('moderacao/', views.painel_moderacao, name='painel_moderacao'),
+    path('moderacao/aprovar/<int:setup_id>/', views.aprovar_setup, name='aprovar_setup'),
+    path('moderacao/recusar/<int:setup_id>/', views.recusar_setup, name='recusar_setup'),
 ]
